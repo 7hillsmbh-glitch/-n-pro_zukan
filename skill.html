@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初体験スキル図鑑 ─ N ARCHIVE</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#23201c; --ink-soft:#5d564d;
+    --paper:#f5f4ef; --card:#fffdf9;
+    --moe:#4f7a5e; --moe-soft:#e9f0eb;
+    --line:#ddd6cb; --gold:#a8813c; --alert:#a05252; --alert-soft:#f6ebeb;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:"Zen Kaku Gothic New",sans-serif; line-height:1.85; -webkit-font-smoothing:antialiased; }
+  .view { display:none; } .view.on { display:block; }
+
+  /* ═ 目次 ═ */
+  .head { text-align:center; padding:36px 18px 10px; }
+  .head .en { font-family:"Shippori Mincho",serif; font-size:10px; letter-spacing:.34em; color:var(--gold); }
+  .head h1 { font-family:"Shippori Mincho",serif; font-size:25px; font-weight:600; letter-spacing:.2em; margin-top:4px; }
+  .head .sub { font-size:11.5px; color:var(--ink-soft); letter-spacing:.1em; margin-top:6px; }
+  .index { max-width:540px; margin:0 auto; padding:14px 16px 60px; }
+  .week { display:flex; align-items:center; gap:12px; margin:22px 0 10px; }
+  .week .w-label { font-family:"Shippori Mincho",serif; font-size:12px; letter-spacing:.16em; color:var(--moe); white-space:nowrap; }
+  .week .w-count { font-size:10.5px; color:var(--ink-soft); white-space:nowrap; letter-spacing:.08em; }
+  .week::after { content:""; flex:1; height:1px; background:var(--line); order:2; }
+  .week .w-count { order:3; }
+  .entry { display:flex; gap:14px; align-items:baseline; padding:13px 4px; border-bottom:1px dotted var(--line); cursor:pointer; }
+  .entry:active { background:var(--moe-soft); }
+  .entry .date { font-family:"Shippori Mincho",serif; font-size:11px; color:var(--ink-soft); letter-spacing:.06em; min-width:4.4em; }
+  .entry .t { flex:1; }
+  .entry .t b { font-family:"Shippori Mincho",serif; font-size:15.5px; font-weight:600; letter-spacing:.05em; display:block; line-height:1.5; }
+  .entry .t small { font-size:11px; color:var(--ink-soft); letter-spacing:.04em; }
+  .entry .no { font-family:"Shippori Mincho",serif; font-size:10px; color:#c4bdb1; letter-spacing:.08em; }
+  .entry.empty { cursor:default; opacity:.55; }
+  .entry.empty b { color:#b3aca0; font-weight:500; }
+
+  /* ═ カード ═ */
+  .back { position:sticky; top:0; z-index:5; background:var(--paper); border-bottom:1px solid var(--line); padding:12px 16px; font-size:13px; color:var(--moe); cursor:pointer; font-family:"Shippori Mincho",serif; letter-spacing:.1em; }
+  .card { max-width:500px; margin:16px auto 60px; background:var(--card); border:1px solid var(--line); box-shadow:0 2px 24px rgba(35,32,28,.07); }
+  .c-head { display:flex; justify-content:space-between; align-items:baseline; padding:14px 18px 10px; border-bottom:1px solid var(--line); }
+  .c-head .no { font-family:"Shippori Mincho",serif; font-size:12px; letter-spacing:.18em; color:var(--moe); }
+  .c-head .cat { font-size:11px; letter-spacing:.14em; color:var(--ink-soft); }
+  .title-block { padding:18px 18px 6px; }
+  h2 { font-family:"Shippori Mincho",serif; font-weight:600; font-size:22px; line-height:1.5; }
+  .subtitle { font-size:12px; color:var(--ink-soft); margin-top:4px; letter-spacing:.06em; }
+  section { padding:18px 18px 4px; }
+  h3 { font-family:"Shippori Mincho",serif; font-size:13.5px; font-weight:600; letter-spacing:.22em; color:var(--moe); display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  h3::after { content:""; flex:1; height:1px; background:var(--line); }
+  .map { background:#f1ede4; border:1px solid var(--line); padding:12px 14px; font-size:12.5px; text-align:center; letter-spacing:.03em; line-height:2; }
+  .pin { background:var(--moe-soft); padding:11px 14px; border-left:3px solid var(--moe); margin-bottom:10px; }
+  .pin b { display:block; font-size:13.5px; }
+  .pin p { font-size:12.5px; color:var(--ink-soft); }
+  .wall { background:var(--alert-soft); border-left:3px solid var(--alert); padding:11px 14px; margin-bottom:10px; font-size:12.5px; }
+  .wall b { display:block; color:var(--alert); font-size:13px; }
+  .wall .exit { color:var(--ink); margin-top:2px; }
+  .wall .exit::before { content:"↳ 抜け方："; color:var(--moe); font-size:11.5px; }
+  ul.got { list-style:none; }
+  ul.got li { font-size:13px; padding:5px 0 5px 1.4em; position:relative; border-bottom:1px dotted var(--line); }
+  ul.got li::before { content:"✓"; position:absolute; left:2px; color:var(--moe); font-weight:700; }
+  .taikan { margin:18px 18px 0; padding:14px; border:1px dashed var(--line); font-size:12.5px; color:var(--ink-soft); }
+  .taikan b { color:var(--ink); font-family:"Shippori Mincho",serif; letter-spacing:.1em; font-size:12px; display:block; margin-bottom:4px; }
+  footer { padding:18px; text-align:center; font-family:"Shippori Mincho",serif; font-size:10.5px; letter-spacing:.28em; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<!-- ═ 目次 ═ -->
+<div class="view on" id="home">
+  <div class="head">
+    <div class="en">N ARCHIVE ─ FIRST EXPERIENCES</div>
+    <h1>初体験スキル図鑑</h1>
+    <div class="sub">何者でもないところから、できるようになった記録</div>
+  </div>
+  <div class="index">
+    <div class="week"><span class="w-label">2026.07 ─ 第3週</span><span class="w-count">標本 1</span></div>
+    <div class="entry" onclick="openCard('s001')">
+      <span class="date">07.13</span>
+      <div class="t"><b>GitHub公開 ─ 自分の作ったものを世界に置く</b><small>初体験スキル｜Web・インフラ</small></div>
+      <span class="no">001</span>
+    </div>
+    <div class="entry empty">
+      <span class="date">--.--</span>
+      <div class="t"><b>（次の初体験がここに刺さる）</b></div>
+      <span class="no">002</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═ No.001 ═ -->
+<div class="view" id="s001">
+  <div class="back" onclick="goHome()">← 目次にもどる</div>
+  <div class="card">
+    <div class="c-head"><span class="no">初体験 No.001 ─ 2026.07.13</span><span class="cat">Web・インフラ</span></div>
+    <div class="title-block">
+      <h2>GitHub公開<br>─ 自分の作ったものを世界に置く</h2>
+      <div class="subtitle">前提スキル：なし（プログラミング経験なし・英語苦手の状態から）</div>
+    </div>
+
+    <section>
+      <h3>全体の地図 ─ 何をどの順でやったか</h3>
+      <div class="map">
+        HTMLファイル（図鑑）を用意<br>↓<br>
+        GitHubアカウント作成 → リポジトリ（置き場）作成<br>↓<br>
+        index.html をアップロード<br>↓<br>
+        Pages（公開スイッチ）をON<br>↓<br>
+        URL誕生 → ホーム画面にアイコン化<br>↓<br>
+        書庫化：index（玄関）＋ mikaku ＋ manual の3ファイル構造へ
+      </div>
+    </section>
+
+    <section>
+      <h3>刺さったピン ─ 構造の理解</h3>
+      <div class="pin"><b>「置き場」「公開スイッチ」「URL」は別物</b><p>GitHubはファイル置き場、Pagesが公開スイッチ、URLはその結果。3つの関係がわかれば全体が怖くなくなる。</p></div>
+      <div class="pin"><b>index.html は「玄関」という特別な名前</b><p>フォルダのURLを開くと自動表示されるのはこの名前だけ。他のファイルは半角英数なら自由。</p></div>
+      <div class="pin"><b>ファイル同士の紐づけはHTMLの中に書かれている</b><p>ただ置くだけでつながるのではなく、リンクの記述＋同じ場所にその名前のファイルがある、の2条件で成立する。</p></div>
+      <div class="pin"><b>URLには組み立て式がある</b><p>https://ユーザー名.github.io/リポジトリ名/ ─ 魔法ではなく式。</p></div>
+    </section>
+
+    <section>
+      <h3>ぶつかった壁と抜け方</h3>
+      <div class="wall"><b>壁①：Pagesが有効にできない（Upgrade表示）</b>リポジトリがPrivate（鍵マーク）だった。<div class="exit">Settings → General → Danger Zone → Change to public。</div></div>
+      <div class="wall"><b>壁②：公開したのに真っ白</b>ファイル名が「index（n図鑑HTML）Git Hub.html」でカッコ・スペース入りだった。<div class="exit">半角の index.html に直してアップし直す。</div></div>
+      <div class="wall"><b>壁③：Unpublish site を押してしまい非公開に</b><div class="exit">Branchを一度None→mainに戻してSave。データは消えていない。</div></div>
+      <div class="wall"><b>壁④：SourceをGitHub Actionsに変えて迷子</b><div class="exit">プルダウンで「Deploy from a branch」に戻すだけ。</div></div>
+      <div class="wall"><b>壁⑤：Index.html と index.html が共存</b>iPadの自動大文字化。GitHubは大文字小文字を区別する。<div class="exit">大文字の方を Delete file。ファイル名は全部小文字で。</div></div>
+      <div class="wall"><b>壁⑥：保存したHTMLがiPadで動かない</b>ファイルアプリのプレビューはJavaScriptを実行しない。<div class="exit">動かすのはブラウザ（＝URLから開く）。だからこそ公開する意味がある。</div></div>
+    </section>
+
+    <section>
+      <h3>できるようになったこと</h3>
+      <ul class="got">
+        <li>GitHubのアカウント・リポジトリ作成、ファイルのアップ・上書き・削除</li>
+        <li>GitHub PagesでのWeb公開と、公開解除からの復旧</li>
+        <li>URL共有とホーム画面アイコン化（疑似アプリ運用）</li>
+        <li>複数HTMLを玄関＋リンクで束ねる「書庫」構造の運用</li>
+        <li>真っ白画面からの原因切り分け（名前？反映待ち？設定？）</li>
+      </ul>
+    </section>
+
+    <div class="taikan">
+      <b>体感データ</b>
+      「プログラマーでも英語ができるわけでもないのに、できた」。知らない世界に自分の手で触れた感覚。ファイルアップが成功しただけで泣きそうに嬉しかった。未知は、構造さえ渡されれば越えられる。
+    </div>
+
+    <footer>N ARCHIVE ─ FIRST EXPERIENCES</footer>
+  </div>
+</div>
+
+<script>
+function openCard(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+function goHome() {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('home').classList.add('on');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
