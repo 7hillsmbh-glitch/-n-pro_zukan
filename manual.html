@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub公開マニュアル ─ 図鑑を世界に置く手順</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#23201c; --ink-soft:#5d564d;
+    --paper:#f5f4ef; --card:#fffdf9;
+    --ai:#33415e; --ai-soft:#e9ecf2;
+    --line:#ddd6cb; --gold:#a8813c; --alert:#a05252; --alert-soft:#f6ebeb;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:"Zen Kaku Gothic New",sans-serif; line-height:1.85; -webkit-font-smoothing:antialiased; padding:28px 14px 70px; }
+  .doc { max-width:560px; margin:0 auto; background:var(--card); border:1px solid var(--line); box-shadow:0 2px 24px rgba(35,32,28,.07); padding:0 0 10px; }
+  header { text-align:center; padding:30px 20px 18px; border-bottom:1px solid var(--line); }
+  header .en { font-family:"Shippori Mincho",serif; font-size:10px; letter-spacing:.3em; color:var(--gold); }
+  h1 { font-family:"Shippori Mincho",serif; font-size:22px; font-weight:600; letter-spacing:.12em; margin-top:6px; }
+  header .sub { font-size:12px; color:var(--ink-soft); margin-top:4px; }
+  section { padding:22px 20px 4px; }
+  h2 { font-family:"Shippori Mincho",serif; font-size:14.5px; font-weight:600; letter-spacing:.2em; color:var(--ai); display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  h2::after { content:""; flex:1; height:1px; background:var(--line); }
+  p { font-size:13.5px; }
+  ol.steps { list-style:none; counter-reset:s; }
+  ol.steps li { counter-increment:s; position:relative; padding:0 0 14px 44px; font-size:13.5px; }
+  ol.steps li::before { content:counter(s,decimal-leading-zero); position:absolute; left:0; top:2px; font-family:"Shippori Mincho",serif; font-size:14px; color:var(--gold); letter-spacing:.05em; }
+  ol.steps li b { display:block; }
+  ol.steps li small { color:var(--ink-soft); font-size:12px; display:block; }
+  code { background:var(--ai-soft); padding:1px 6px; border-radius:3px; font-size:12.5px; word-break:break-all; }
+  .url-box { background:var(--ai-soft); border-left:3px solid var(--ai); padding:10px 14px; font-size:13px; margin:8px 0 4px; word-break:break-all; }
+  .warn { background:var(--alert-soft); border-left:3px solid var(--alert); padding:11px 14px; margin-bottom:10px; font-size:12.5px; }
+  .warn b { display:block; color:var(--alert); font-size:13px; }
+  .flow { background:#f1ede4; border:1px solid var(--line); padding:12px 14px; font-size:13px; text-align:center; letter-spacing:.04em; margin-bottom:6px; }
+  footer { padding:20px; text-align:center; font-family:"Shippori Mincho",serif; font-size:10.5px; letter-spacing:.26em; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+<a href="index.html" style="position:sticky; top:0; z-index:6; display:block; background:#f5f4ef; border-bottom:1px solid #ddd6cb; padding:11px 16px; font-family:'Shippori Mincho',serif; font-size:12.5px; letter-spacing:.12em; color:#a8813c; text-decoration:none;">← (n) ARCHIVE LIBRARY にもどる</a>
+
+<div class="doc">
+  <header>
+    <div class="en">N ARCHIVE ─ OPERATION MANUAL</div>
+    <h1>GitHub公開マニュアル</h1>
+    <div class="sub">作ったHTMLを世界に置いて、アプリのように使うまで（2026.07 奈々の実体験版）</div>
+  </header>
+
+  <section>
+    <h2>全体像 ─ 何をしているのか</h2>
+    <div class="flow">HTMLファイル → GitHub（置き場）→ Pages（公開スイッチ）→ URL誕生 → ホーム画面アイコン化</div>
+    <p>GitHubは「ファイルの置き場」、Pagesは「それをWebページとして公開する機能」。URLは一度作れば変わらず、中身のファイルを上書きするだけで図鑑が育つ。</p>
+  </section>
+
+  <section>
+    <h2>初回セットアップ（一度だけ）</h2>
+    <ol class="steps">
+      <li><b>Safariで github.com → Sign up</b><small>※アプリ版GitHubは今回の作業に不向き。必ずブラウザで。ユーザー名はURLに入るのでシンプルに。</small></li>
+      <li><b>右上「＋」→ New repository</b><small>名前は半角英数（例：mikaku-zukan）。これもURLの一部になる。</small></li>
+      <li><b>必ず「Public」を選んで Create</b><small>Privateだと無料プランではPagesが使えない（今回ここでつまずいた）。</small></li>
+      <li><b>「uploading an existing file」→ index.html を選ぶ → Commit changes</b><small>ファイル名は後述の通り厳守。</small></li>
+      <li><b>Settings → 左メニュー Pages</b><small>Sourceは「Deploy from a branch」のまま。Branchを「main」にして Save。</small></li>
+      <li><b>1〜3分待つ → 「Your site is live at …」が出たら成功</b><small>出なければページを再読み込みしてもう一度Pagesを開く。</small></li>
+      <li><b>URLを開く → 共有ボタン →「ホーム画面に追加」</b><small>アイコン登録は一度きり。以後は中身を更新してもやり直し不要。</small></li>
+    </ol>
+    <div class="url-box">URLの式：https://<b>ユーザー名</b>.github.io/<b>リポジトリ名</b>/</div>
+  </section>
+
+  <section>
+    <h2>更新のたびにやること（ループ）</h2>
+    <ol class="steps">
+      <li><b>Claudeに図鑑の最新index.html＋新レシピ素材を渡す</b><small>「既存の構成とデザインを守ってNo.◯◯◯を追加、index.htmlで出力して」と指示。</small></li>
+      <li><b>できた index.html を保存</b></li>
+      <li><b>GitHubのリポジトリ → Add file → Upload files → Commit</b><small>同じファイル名なら自動で上書きされる。</small></li>
+      <li><b>1〜2分待って図鑑アイコンから開く → 更新されてる</b></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>更新が反映されないときのチェック（2026.07.17追記）</h2>
+    <p style="margin-bottom:12px;">上書きしたのにページが古いまま。原因はほぼこの3つ。上から順に確認する。</p>
+    <ol class="steps">
+      <li><b>リポジトリ側が本当に新しいか見る</b><small>GitHubのCode画面で index.html を開いて中身を確認。古ければアップロードし直し。「新ファイルを追加」でも古い index.html が残っていると、トップは古い方を表示し続ける。</small></li>
+      <li><b>Actionsタブでビルド完了を確認</b><small>リポジトリの「Actions」タブを開き、最新の実行に緑のチェック✅が付いていれば反映済み。黄色は進行中（数分待つ）、赤は失敗。</small></li>
+      <li><b>ブラウザのキャッシュを疑う</b><small>1と2がOKなのに古いままなら、犯人はほぼ端末側のキャッシュ。プライベートブラウズ（シークレットモード）でURLを開くと、キャッシュなしの素の状態で確認できる。それで新しく見えていれば、時間経過か再読み込みで通常表示も直る。</small></li>
+    </ol>
+    <div class="warn"><b>「GitHub側」と「自分の端末側」を分けて考える</b>1・2はGitHub側のチェック、3は端末側のチェック。どちらの問題かを切り分ければ、慌てずに対処できる。</div>
+  </section>
+
+  <section>
+    <h2>つまずきポイント全記録</h2>
+    <div class="warn"><b>ファイル名は「index.html」以外NG</b>カッコ・スペース・日本語が入ると別ファイル扱いになり、ページが真っ白になる。「index（n図鑑HTML）Git Hub.html」で実際に真っ白になった。半角の index.html 厳守。</div>
+    <div class="warn"><b>ファイル名に日付を入れない</b>「manual20260717.html」のように日付入りでアップすると、リンクは元の名前（manual.html）宛てなので、たどり着けず404になる。実際になった。更新は「同じ名前で上書き」が正解。日付はファイル名ではなく、中身のフッターに記録する。古い方は残ったままでOK、同名アップで自動上書きされる。</div>
+    <div class="warn"><b>「Unpublish site」を押さない</b>押すと公開が解除されて真っ白に戻る。押してしまったら：Pages → Branchを一度None → mainに戻す → Save で再公開できる。</div>
+    <div class="warn"><b>Sourceは「Deploy from a branch」</b>「GitHub Actions」に切り替えると難しい設定画面に入ってしまう。触ってしまったらプルダウンで戻すだけでOK。</div>
+    <div class="warn"><b>Saveボタンがグレーなのは正常</b>「変更がない＝押す必要がない」の意味。壊れていない。</div>
+    <div class="warn"><b>真っ白でもすぐ絶望しない</b>反映には1〜3分かかる。リロード→それでもダメならCode画面でindex.htmlの存在とファイル名を確認する。</div>
+    <div class="warn"><b>HTMLをファイルアプリで直接開くと動かない</b>iPadのプレビューはJavaScriptを実行しないため。スワイプ等が動くのはブラウザ（＝URLから開く）だけ。</div>
+    <div class="warn"><b>Publicの意味を忘れない</b>URLを知っていれば誰でも見られる。料理はOK、個人的な軌跡図鑑（N ARCHIVE）を置くときは要相談。</div>
+  </section>
+
+  <footer>NANA'S ARCHIVE ─ 2026.07.13 初公開達成の記録 ／ 2026.07.17 反映チェック追記</footer>
+</div>
+</body>
+</html>
